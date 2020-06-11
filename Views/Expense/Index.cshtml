@@ -1,0 +1,19 @@
+﻿@model IEnumerable<ExpenseWeb.Models.ExpenseListViewModel>
+
+<table>
+    <thead>
+        <tr>
+            <th>Uitgave</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var expense in Model)
+        {
+            <tr>
+                <td>
+                    @expense.Amount @expense.Date
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
