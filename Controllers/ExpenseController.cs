@@ -33,5 +33,25 @@ namespace ExpenseWeb.Controllers
             }
             return View(expences);
         }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            ExpeseCreateViewModel NewExpense = new ExpeseCreateViewModel();
+            return View(NewExpense);
+        }
+
+        [HttpPost]
+        public IActionResult Create(ExpeseCreateViewModel NewContact)
+        {
+
+            _expenseDatabase.Insert(new Expense
+            {
+                Amount = NewContact.Amount,
+                Date = NewContact.Date,
+                Description = NewContact.Description
+            });
+            return RedirectToAction("Index");
+        }
     }
 }

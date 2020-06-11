@@ -3,7 +3,9 @@
 <table>
     <thead>
         <tr>
-            <th>Uitgave</th>
+            <th>Bedrag</th>
+            <th>Datum</th>
+            <th>Beschrijving</th>
         </tr>
     </thead>
     <tbody>
@@ -11,9 +13,22 @@
         {
             <tr>
                 <td>
-                    @expense.Amount @expense.Date
+                    @expense.Amount 
+                </td>
+                <td>
+                    @expense.Date.ToShortDateString()
+                </td>
+                <td>
+                    @expense.Description
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<style>
+    td, th {
+    padding-left:20px;
+    }
+
+</style>
