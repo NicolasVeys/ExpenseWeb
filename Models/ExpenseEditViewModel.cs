@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseWeb.Models
 {
-    public class ExpeseCreateViewModel
+    public class ExpenseEditViewModel
     {
         public int Id { get; set; }
 

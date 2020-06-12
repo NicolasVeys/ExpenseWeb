@@ -6,6 +6,7 @@
             <th>Bedrag</th>
             <th>Datum</th>
             <th>Beschrijving</th>
+            <th>Opties</th>
         </tr>
     </thead>
     <tbody>
@@ -20,6 +21,9 @@
                 </td>
                 <td>
                     @expense.Description
+                </td>
+                <td>
+                    <a asp-controller="expense" asp-action="Edit" asp-route-id="@expense.Id"> Edit</a>
                 </td>
             </tr>
         }
