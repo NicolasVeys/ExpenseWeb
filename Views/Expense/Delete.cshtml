@@ -1,0 +1,5 @@
+﻿@model ExpenseWeb.Models.ExpenseDeleteViewModel
+
+    <p> Weet je zeker dat je deze uitgave wilt verwijderen?</p> 
+    <p> €@Model.Amount @Model.Date @Model.Description </p>
+    <a asp-controller="expense" asp-action="ConfirmDelete" asp-route-id="@Model.Id">Confirm</a> | <a asp-controller="expense">Cancel</a>

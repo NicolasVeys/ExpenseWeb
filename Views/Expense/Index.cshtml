@@ -23,7 +23,8 @@
                     @expense.Description
                 </td>
                 <td>
-                    <a asp-controller="expense" asp-action="Edit" asp-route-id="@expense.Id"> Edit</a>
+                    <a asp-controller="expense" asp-action="Edit" asp-route-id="@expense.Id"> Edit</a> |
+                    <a asp-controller="expense" asp-action="Delete" asp-route-id="@expense.Id"> Verwijderen</a>
                 </td>
             </tr>
         }

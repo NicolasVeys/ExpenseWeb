@@ -83,5 +83,23 @@ namespace ExpenseWeb.Controllers
             _expenseDatabase.Update(id, DomainExpense);
             return RedirectToAction("Index");
         }
+        public IActionResult Delete(int id)
+        {
+            Expense domainExpense = _expenseDatabase.GetExpenses(id);
+            ExpenseDeleteViewModel vm = new ExpenseDeleteViewModel()
+            {
+                Id = domainExpense.Id,
+                Amount = domainExpense.Amount,
+                Description = domainExpense.Description,
+                Date = domainExpense.Date
+            };
+            return View(vm);
+        }
+
+        public IActionResult ConfirmDelete(int id)
+        {
+            _expenseDatabase.Delete(id);
+            return RedirectToAction("");
+        }
     }
 }
