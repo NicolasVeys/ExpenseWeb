@@ -28,7 +28,8 @@ namespace ExpenseWeb.Controllers
                     Id = expence.Id,
                     Amount = expence.Amount,
                     Date = expence.Date,
-                    Description = expence.Description
+                    Description = expence.Description,
+                    Category = expence.Category
                 });
             }
             return View(expences);
@@ -49,7 +50,8 @@ namespace ExpenseWeb.Controllers
             {
                 Amount = NewContact.Amount,
                 Date = NewContact.Date,
-                Description = NewContact.Description
+                Description = NewContact.Description,
+                Category = NewContact.Category
             });
             return RedirectToAction("Index");
         }

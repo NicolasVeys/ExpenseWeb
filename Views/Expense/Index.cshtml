@@ -6,6 +6,7 @@
             <th>Bedrag</th>
             <th>Datum</th>
             <th>Beschrijving</th>
+            <th>Category</th>
             <th>Opties</th>
         </tr>
     </thead>
@@ -14,13 +15,16 @@
         {
             <tr>
                 <td>
-                    @expense.Amount 
+                    €@expense.Amount 
                 </td>
                 <td>
                     @expense.Date.ToShortDateString()
                 </td>
                 <td>
                     @expense.Description
+                </td>
+                <td>
+                    @expense.Category
                 </td>
                 <td>
                     <a asp-controller="expense" asp-action="Edit" asp-route-id="@expense.Id"> Edit</a> |
