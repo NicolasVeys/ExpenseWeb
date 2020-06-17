@@ -41,6 +41,7 @@ namespace ExpenseWeb.Controllers
         public async Task<IActionResult> Create()
         {
             ExpenseCreateViewModel NewExpense = new ExpenseCreateViewModel();
+
             IEnumerable<PaymentStatus> paymentStatusus = await _expenseDatabase.paymentStatuses.ToListAsync();
             foreach (var Status in paymentStatusus)
             {
@@ -68,11 +69,6 @@ namespace ExpenseWeb.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             Expense expenseFromDb = await _expenseDatabase.Expenses.FindAsync(id);
-            IEnumerable<PaymentStatus> paymentStatusus = await _expenseDatabase.paymentStatuses.ToListAsync();
-            foreach (var Status in paymentStatusus)
-            {
-                expenseFromDb.PaymentStatusus.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem() { Text = Status.Status, Value = Status.Id.ToString() });
-            }
 
             ExpenseEditViewModel vm = new ExpenseEditViewModel
             {
@@ -82,6 +78,13 @@ namespace ExpenseWeb.Controllers
                 Category = expenseFromDb.Category,
                 PaymentStatusId = expenseFromDb.PaymentStatusId
             };
+
+            IEnumerable<PaymentStatus> paymentStatusus = await _expenseDatabase.paymentStatuses.ToListAsync();
+            foreach (var Status in paymentStatusus)
+            {
+                vm.PaymentStatusus.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem() { Text = Status.Status, Value = Status.Id.ToString() });
+            }
+
             return View(vm);
         }
 
@@ -98,6 +101,8 @@ namespace ExpenseWeb.Controllers
             expenseFromDb.Date = vm.Date;
             expenseFromDb.Description = vm.Description;
             expenseFromDb.Category = vm.Category;
+            expenseFromDb.PaymentStatusId = vm.PaymentStatusId;
+
 
             _expenseDatabase.Expenses.Update(expenseFromDb);
             _expenseDatabase.SaveChanges();
