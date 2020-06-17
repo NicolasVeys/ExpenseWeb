@@ -5,33 +5,28 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
-namespace ExpenseWeb.Controllers
-{
-    public class StatisticsController : Controller
-    {
-        private readonly IExpenseDatabase _expenseDatabase;
-        public StatisticsController(IExpenseDatabase expenseDatabase)
-        {
-            _expenseDatabase = expenseDatabase;
-        }
-        public IActionResult Index()
-        {
-            IEnumerable<Expense> expenceFromDb = _expenseDatabase.GetExpenses();
-            List<ExpenseStatsViewModel> expences = new List<ExpenseStatsViewModel>();
-            foreach (var expence in expenceFromDb)
-            {
-                expences.Add(new ExpenseStatsViewModel()
-                {
-                    Id = expence.Id,
-                    Amount = expence.Amount,
-                    Date = expence.Date,
-                    Description = expence.Description,
-                    Category = expence.Category
-                });
-            }
-            return View(expences);
-        }
-    }
-}
+//namespace ExpenseWeb.Controllers
+//{
+//    public class StatisticsController : Controller
+//    {
+//        private readonly IExpenseDatabase _expenseDatabase;
+//        public StatisticsController(IExpenseDatabase expenseDatabase)
+//        {
+//            _expenseDatabase = expenseDatabase;
+//        }
+
+
+//        [HttpGet]
+//        public IActionResult Stats()
+//        {
+//            IEnumerable<Expense> expenceFromDb = _expenseDatabase.GetExpenses();
+//            ExpenseStatsViewModel stats = new ExpenseStatsViewModel();
+//            stats.MaxExpense = expenceFromDb.Max(x => x.Amount);
+
+//            return View(stats);
+//        }
+//    }
+//}

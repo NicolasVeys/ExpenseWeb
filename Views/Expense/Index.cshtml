@@ -7,6 +7,7 @@
             <th>Datum</th>
             <th>Beschrijving</th>
             <th>Category</th>
+            <th>Payment status</th>
             <th>Opties</th>
         </tr>
     </thead>
@@ -25,6 +26,9 @@
                 </td>
                 <td>
                     @expense.Category
+                </td>
+                <td>
+                    @expense.PaymentStatus
                 </td>
                 <td>
                     <a asp-controller="expense" asp-action="Edit" asp-route-id="@expense.Id"> Edit</a> |

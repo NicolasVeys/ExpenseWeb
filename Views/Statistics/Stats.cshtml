@@ -1,0 +1,6 @@
+﻿@model IEnumerable<ExpenseWeb.Models.ExpenseStatsViewModel>
+
+@foreach (var stat in Model)
+{
+    @stat.MaxExpense;
+}

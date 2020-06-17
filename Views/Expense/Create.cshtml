@@ -1,4 +1,4 @@
-﻿@model ExpenseWeb.Models.ExpeseCreateViewModel
+﻿@model ExpenseWeb.Models.ExpenseCreateViewModel
 
     <form asp-controller="Expense" asp-action="Create" mothod="post">
         <div class="form-group">
@@ -25,6 +25,10 @@
                 <option value="Others">Others</option>
             </select>
             <span class="text-danger" asp-validation-for="Category"></span>
+        </div>
+        <div>
+            <label asp-for="PaymentStatusId"></label>
+            <select asp-items="@Model.PaymentStatusus" asp-for="PaymentStatusId"></select>
         </div>
 
         <button class="btn btn-secondary" type="submit">Create Contact</button>

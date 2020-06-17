@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseWeb.Models
 {
-    public class ExpeseCreateViewModel
+    public class ExpenseCreateViewModel
     {
         public int Id { get; set; }
 
@@ -19,6 +20,7 @@ namespace ExpenseWeb.Models
         public DateTime Date { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
-
+        public int PaymentStatusId { get; set; }
+        public List<SelectListItem> PaymentStatusus { get; set; } = new List<SelectListItem>();
     }
 }

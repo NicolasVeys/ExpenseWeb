@@ -12,5 +12,7 @@ namespace ExpenseWeb.Domain
         public DateTime Date { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
+        public int PaymentStatusId { get; set; }
+        public PaymentStatus PaymentStatus { get; set; }
     }
 }
