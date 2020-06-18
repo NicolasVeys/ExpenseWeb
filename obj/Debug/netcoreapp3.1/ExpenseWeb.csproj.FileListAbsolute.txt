@@ -73,3 +73,4 @@ C:\Users\Ginger\source\repos\ExpenseWeb\ExpenseWeb\obj\Debug\netcoreapp3.1\stati
 C:\Users\Ginger\source\repos\ExpenseWeb\ExpenseWeb\obj\Debug\netcoreapp3.1\ExpenseWeb.dll
 C:\Users\Ginger\source\repos\ExpenseWeb\ExpenseWeb\obj\Debug\netcoreapp3.1\ExpenseWeb.pdb
 C:\Users\Ginger\source\repos\ExpenseWeb\ExpenseWeb\obj\Debug\netcoreapp3.1\ExpenseWeb.genruntimeconfig.cache
+C:\Users\Ginger\source\repos\ExpenseWeb\ExpenseWeb\obj\Debug\netcoreapp3.1\ExpenseWeb.csprojAssemblyReference.cache
