@@ -9,7 +9,7 @@ namespace ExpenseWeb.Domain
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public IList<ExpenseProduct> ExpenseProducts { get; set; }
+        public List<ExpenseProduct> ExpenseProducts { get; set; }
 
     }
 }

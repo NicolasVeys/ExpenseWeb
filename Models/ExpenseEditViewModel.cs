@@ -22,5 +22,7 @@ namespace ExpenseWeb.Models
         public string Category { get; set; }
         public int PaymentStatusId { get; set; }
         public List<SelectListItem> PaymentStatusus { get; set; } = new List<SelectListItem>();
+        public List<SelectListItem> Products { get; set; } = new List<SelectListItem>();
+        public int[] SelectedProducts { get; set; }
     }
 }

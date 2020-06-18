@@ -30,6 +30,10 @@
             <label asp-for="PaymentStatusId"></label>
             <select asp-items="@Model.PaymentStatusus" asp-for="PaymentStatusId"></select>
         </div>
+        <div>
+            <label asp-for="SelectedProducts"></label>
+            <select multiple asp-items="@Model.Products" asp-for="SelectedProducts"></select>
+        </div>
 
         <button class="btn btn-secondary" type="submit">Edit Contact</button>
 

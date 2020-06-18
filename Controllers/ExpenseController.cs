@@ -1,11 +1,14 @@
 ﻿using ExpenseWeb.Database;
 using ExpenseWeb.Domain;
+using ExpenseWeb.Migrations;
 using ExpenseWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace ExpenseWeb.Controllers
@@ -20,10 +23,18 @@ namespace ExpenseWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Expense> expencesFromDb = await _expenseDatabase.Expenses.Include(x => x.PaymentStatus).ToListAsync();
+            IEnumerable<Expense> expencesFromDb = await _expenseDatabase.Expenses
+                .Include(x => x.PaymentStatus)
+                .Include(e => e.ExpenseProducts)
+                .ThenInclude(p => p.Product).ToListAsync();
             List<ExpenseListViewModel> expences = new List<ExpenseListViewModel>();
             foreach (var expence in expencesFromDb)
             {
+                string productList = "";
+                foreach (var product in expence.ExpenseProducts)
+                {
+                    productList += product.Product.Name + " ";
+                }
                 expences.Add(new ExpenseListViewModel()
                 {
                     Id = expence.Id,
@@ -32,6 +43,7 @@ namespace ExpenseWeb.Controllers
                     Description = expence.Description,
                     Category = expence.Category,
                     PaymentStatus = expence.PaymentStatus.Status,
+                    ProductName = productList,
                 });
             }
             return View(expences);
@@ -45,7 +57,12 @@ namespace ExpenseWeb.Controllers
             IEnumerable<PaymentStatus> paymentStatusus = await _expenseDatabase.paymentStatuses.ToListAsync();
             foreach (var Status in paymentStatusus)
             {
-                NewExpense.PaymentStatusus.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem() {Text = Status.Status, Value = Status.Id.ToString()});
+                NewExpense.PaymentStatusus.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem() { Text = Status.Status, Value = Status.Id.ToString() });
+            }
+            IEnumerable<Product> expenseProducts = await _expenseDatabase.Products.ToListAsync();
+            foreach (var Product in expenseProducts)
+            {
+                NewExpense.Products.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem() { Text = Product.Name, Value = Product.Id.ToString() });
             }
             return View(NewExpense);
         }
@@ -53,7 +70,13 @@ namespace ExpenseWeb.Controllers
         [HttpPost]
         public IActionResult Create(ExpenseCreateViewModel NewExpense)
         {
-
+            List<ExpenseProduct> products = new List<ExpenseProduct>();
+            foreach (var productId in NewExpense.SelectedProductId)
+            {
+                products.Add(new ExpenseProduct() { 
+                ProductId = productId
+                });
+            }
             _expenseDatabase.Expenses.Add(new Expense
             {
                 Amount = NewExpense.Amount,
@@ -61,14 +84,16 @@ namespace ExpenseWeb.Controllers
                 Description = NewExpense.Description,
                 Category = NewExpense.Category,
                 PaymentStatusId = NewExpense.PaymentStatusId,
+                ExpenseProducts = products
             });
             _expenseDatabase.SaveChanges();
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            Expense expenseFromDb = await _expenseDatabase.Expenses.FindAsync(id);
+            Expense expenseFromDb = await _expenseDatabase.Expenses.Include(expense => expense.ExpenseProducts).FirstOrDefaultAsync(m => m.Id == id);
 
             ExpenseEditViewModel vm = new ExpenseEditViewModel
             {
@@ -76,14 +101,11 @@ namespace ExpenseWeb.Controllers
                 Date = expenseFromDb.Date,
                 Description = expenseFromDb.Description,
                 Category = expenseFromDb.Category,
-                PaymentStatusId = expenseFromDb.PaymentStatusId
+                PaymentStatusId = expenseFromDb.PaymentStatusId,
+                SelectedProducts = expenseFromDb.ExpenseProducts.Select(x => x.ProductId).ToArray(),
             };
-
-            IEnumerable<PaymentStatus> paymentStatusus = await _expenseDatabase.paymentStatuses.ToListAsync();
-            foreach (var Status in paymentStatusus)
-            {
-                vm.PaymentStatusus.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem() { Text = Status.Status, Value = Status.Id.ToString() });
-            }
+            var products = await _expenseDatabase.Products.ToListAsync();
+            vm.Products = products.Select(tag => new SelectListItem() { Value = tag.Id.ToString(), Text = tag.Name }).ToList();
 
             return View(vm);
         }
