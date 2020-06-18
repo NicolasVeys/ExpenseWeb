@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
+    <div class="ribbon ribbon-top-right"><span>@Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")</span></div>
+
     <header>
 
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -31,7 +33,6 @@
         </nav>
     </header>
     <div class="container">
-        <div class="ribbon ribbon-top-right">ribbon</div>
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
