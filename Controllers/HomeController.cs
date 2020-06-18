@@ -6,16 +6,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ExpenseWeb.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace ExpenseWeb.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IConfiguration _configuration;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
         {
             _logger = logger;
+            _configuration = configuration;
         }
 
         public IActionResult Index()
@@ -26,6 +29,16 @@ namespace ExpenseWeb.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public IActionResult Devs()
+        {
+            DeveloperDetailViewModel dev = new DeveloperDetailViewModel()
+            {
+                Firstname = _configuration["developer:firstname"],
+                Lastname = _configuration["developer:lastname"]
+            };
+            return View(dev);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
