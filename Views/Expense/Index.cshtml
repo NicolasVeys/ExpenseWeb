@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<ExpenseWeb.Models.ExpenseListViewModel>
-
+@using  Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
 
 
 
@@ -20,7 +21,7 @@
         {
             <tr>
                 <td>
-                    €@expense.Amount 
+                    €@expense.Amount
                 </td>
                 <td>
                     @expense.Date.ToShortDateString()
@@ -38,8 +39,15 @@
                     @expense.ProductName
                 </td>
                 <td>
-                    <a asp-controller="expense" asp-action="Edit" asp-route-id="@expense.Id"> Edit</a> |
-                    <a asp-controller="expense" asp-action="Delete" asp-route-id="@expense.Id"> Verwijderen</a>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <a asp-controller="expense" asp-action="Edit" asp-route-id="@expense.Id"> Edit |</a>
+                        <a asp-controller="expense" asp-action="Delete" asp-route-id="@expense.Id"> Verwijderen</a>
+                    }
+                    else
+                    {
+                        <p>Log in om de opties te gebruiken</p>
+                    }
                 </td>
             </tr>
         }
@@ -48,7 +56,6 @@
 
 <style>
     td, th {
-    padding-left:20px;
+        padding-left: 20px;
     }
-
 </style>

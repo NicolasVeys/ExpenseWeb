@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ExpenseWeb.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ExpenseWeb.Controllers
 {
@@ -20,7 +21,6 @@ namespace ExpenseWeb.Controllers
             _logger = logger;
             _configuration = configuration;
         }
-
         public IActionResult Index()
         {
             return View();

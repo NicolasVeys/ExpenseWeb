@@ -1,5 +1,6 @@
 ﻿using ExpenseWeb.Domain;
 using ExpenseWeb.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ExpenseWeb.Database
 {
-    public class ExpenseContext : DbContext
+    public class ExpenseContext : IdentityDbContext
     {
         public ExpenseContext(DbContextOptions<ExpenseContext> options) : base(options)
         {
@@ -20,6 +21,7 @@ namespace ExpenseWeb.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<PaymentStatus>().HasData(new PaymentStatus { Id = 1, Status = "Already payed" });
             modelBuilder.Entity<PaymentStatus>().HasData(new PaymentStatus { Id = 2, Status = "Not payed" });
 

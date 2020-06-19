@@ -16,6 +16,5 @@ namespace ExpenseWeb.Domain
         public int PaymentStatusId { get; set; }
         public PaymentStatus PaymentStatus { get; set; }
         public List<ExpenseProduct> ExpenseProducts { get; set; }
-
     }
 }

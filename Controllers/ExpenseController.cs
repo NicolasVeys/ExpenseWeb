@@ -2,6 +2,7 @@
 using ExpenseWeb.Domain;
 using ExpenseWeb.Migrations;
 using ExpenseWeb.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +50,7 @@ namespace ExpenseWeb.Controllers
             return View(expences);
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -90,6 +92,7 @@ namespace ExpenseWeb.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -131,6 +134,8 @@ namespace ExpenseWeb.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             Expense domainExpense = await _expenseDatabase.Expenses.FindAsync(id);

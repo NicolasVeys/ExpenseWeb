@@ -1,12 +1,16 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@using  Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
 
-<div class="text-center">
+    <div class="text-center">
 
-    <a asp-controller="Expense">Uitgaven</a> |
-    <a asp-controller="Expense" asp-action="create">Nieuwe Uitgave aanmaken</a>
-    <a asp-controller="Statistics" asp-action="Stats">Nieuwe Uitgave aanmaken</a> |
+        <a asp-controller="Expense">Uitgaven</a>
+        @if (SignInManager.IsSignedIn(User))
+        { 
+            <br /><a asp-controller="Expense" asp-action="create">Nieuwe Uitgave aanmaken</a>
 
+        }
+    </div>
 
-</div>
