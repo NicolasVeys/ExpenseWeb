@@ -194,3 +194,4 @@ C:\Users\Ginger\source\repos\ExpenseWeb\ExpenseWeb\obj\Debug\netcoreapp3.1\Razor
 C:\Users\Ginger\source\repos\ExpenseWeb\ExpenseWeb\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
 C:\Users\Ginger\source\repos\ExpenseWeb\ExpenseWeb\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewStart.cshtml.g.cs
 C:\Users\Ginger\source\repos\ExpenseWeb\ExpenseWeb\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LoginPartial.cshtml.g.cs
+C:\Users\Ginger\source\repos\ExpenseWeb\ExpenseWeb\obj\Debug\netcoreapp3.1\Razor\Views\Expense\NoSneakyStuff.cshtml.g.cs

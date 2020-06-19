@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
@@ -27,7 +28,7 @@ namespace ExpenseWeb.Controllers
             IEnumerable<Expense> expencesFromDb = await _expenseDatabase.Expenses
                 .Include(x => x.PaymentStatus)
                 .Include(e => e.ExpenseProducts)
-                .ThenInclude(p => p.Product).ToListAsync();
+                .ThenInclude(p => p.Product).Where(expense => expense.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)).ToListAsync();
             List<ExpenseListViewModel> expences = new List<ExpenseListViewModel>();
             foreach (var expence in expencesFromDb)
             {
@@ -59,12 +60,12 @@ namespace ExpenseWeb.Controllers
             IEnumerable<PaymentStatus> paymentStatusus = await _expenseDatabase.paymentStatuses.ToListAsync();
             foreach (var Status in paymentStatusus)
             {
-                NewExpense.PaymentStatusus.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem() { Text = Status.Status, Value = Status.Id.ToString() });
+                NewExpense.PaymentStatusus.Add(new SelectListItem() { Text = Status.Status, Value = Status.Id.ToString() });
             }
             IEnumerable<Product> expenseProducts = await _expenseDatabase.Products.ToListAsync();
             foreach (var Product in expenseProducts)
             {
-                NewExpense.Products.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem() { Text = Product.Name, Value = Product.Id.ToString() });
+                NewExpense.Products.Add(new SelectListItem() { Text = Product.Name, Value = Product.Id.ToString() });
             }
             return View(NewExpense);
         }
@@ -75,8 +76,9 @@ namespace ExpenseWeb.Controllers
             List<ExpenseProduct> products = new List<ExpenseProduct>();
             foreach (var productId in NewExpense.SelectedProductId)
             {
-                products.Add(new ExpenseProduct() { 
-                ProductId = productId
+                products.Add(new ExpenseProduct()
+                {
+                    ProductId = productId
                 });
             }
             _expenseDatabase.Expenses.Add(new Expense
@@ -86,7 +88,8 @@ namespace ExpenseWeb.Controllers
                 Description = NewExpense.Description,
                 Category = NewExpense.Category,
                 PaymentStatusId = NewExpense.PaymentStatusId,
-                ExpenseProducts = products
+                ExpenseProducts = products,
+                UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
             });
             _expenseDatabase.SaveChanges();
             return RedirectToAction("Index");
@@ -97,20 +100,29 @@ namespace ExpenseWeb.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             Expense expenseFromDb = await _expenseDatabase.Expenses.Include(expense => expense.ExpenseProducts).FirstOrDefaultAsync(m => m.Id == id);
-
-            ExpenseEditViewModel vm = new ExpenseEditViewModel
+            if (expenseFromDb.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
             {
-                Amount = expenseFromDb.Amount,
-                Date = expenseFromDb.Date,
-                Description = expenseFromDb.Description,
-                Category = expenseFromDb.Category,
-                PaymentStatusId = expenseFromDb.PaymentStatusId,
-                SelectedProducts = expenseFromDb.ExpenseProducts.Select(x => x.ProductId).ToArray(),
-            };
-            var products = await _expenseDatabase.Products.ToListAsync();
-            vm.Products = products.Select(tag => new SelectListItem() { Value = tag.Id.ToString(), Text = tag.Name }).ToList();
 
-            return View(vm);
+                ExpenseEditViewModel vm = new ExpenseEditViewModel
+                {
+                    Amount = expenseFromDb.Amount,
+                    Date = expenseFromDb.Date,
+                    Description = expenseFromDb.Description,
+                    Category = expenseFromDb.Category,
+                    PaymentStatusId = expenseFromDb.PaymentStatusId,
+                    SelectedProducts = expenseFromDb.ExpenseProducts.Select(x => x.ProductId).ToArray(),
+                };
+                var products = await _expenseDatabase.Products.ToListAsync();
+                vm.Products = products.Select(tag => new SelectListItem() { Value = tag.Id.ToString(), Text = tag.Name }).ToList();
+
+                return View(vm);
+            }
+            else
+            {
+                return RedirectToAction("NoSneakyStuff");
+            }
+
+
         }
 
         [HttpPost]
@@ -139,14 +151,21 @@ namespace ExpenseWeb.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             Expense domainExpense = await _expenseDatabase.Expenses.FindAsync(id);
-            ExpenseDeleteViewModel vm = new ExpenseDeleteViewModel()
+            if (domainExpense.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
             {
-                Id = domainExpense.Id,
-                Amount = domainExpense.Amount,
-                Description = domainExpense.Description,
-                Date = domainExpense.Date
-            };
-            return View(vm);
+                ExpenseDeleteViewModel vm = new ExpenseDeleteViewModel()
+                {
+                    Id = domainExpense.Id,
+                    Amount = domainExpense.Amount,
+                    Description = domainExpense.Description,
+                    Date = domainExpense.Date
+                };
+                return View(vm);
+            }
+            else
+            {
+                return RedirectToAction("NoSneakyStuff");
+            }
         }
 
         public IActionResult ConfirmDelete(int id)
@@ -156,6 +175,10 @@ namespace ExpenseWeb.Controllers
             _expenseDatabase.SaveChanges();
 
             return RedirectToAction("");
+        }
+        public IActionResult NoSneakyStuff()
+        {
+            return View("NoSneakyStuff");
         }
     }
 }

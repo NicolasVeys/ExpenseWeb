@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using ExpenseWeb.Migrations;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +18,7 @@ namespace ExpenseWeb.Domain
         public int PaymentStatusId { get; set; }
         public PaymentStatus PaymentStatus { get; set; }
         public List<ExpenseProduct> ExpenseProducts { get; set; }
+        public IdentityUser User { get; set; }
+        public string UserId { get; set; }
     }
 }
